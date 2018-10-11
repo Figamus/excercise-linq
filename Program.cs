@@ -10,6 +10,16 @@ namespace linq
         public double Balance { get; set; }
         public string Bank { get; set; }
     }
+    public class Bank
+    {
+        public string Symbol { get; set; }
+        public string Name { get; set; }
+    }
+    public class ReportItem
+    {
+        public string CustomerName { get; set; }
+        public string BankName { get; set; }
+    }
     class Program
     {
         static void Main (string[] args)
@@ -139,9 +149,47 @@ namespace linq
                 new Customer(){ Name="Tina Fey", Balance=1000000.00, Bank="CITI"},
                 new Customer(){ Name="Sid Brown", Balance=49582.68, Bank="CITI"}
             };
-            foreach(Customer c in customers){
-                Console.WriteLine(c.Name);
+            var millionaires = customers.Where(c => c.Balance > 999999.00);
+
+            var results = from customer in millionaires
+                group customer.Balance by customer.Bank into g
+                select new { BankId = g.Key, Balance = g.ToList() };
+
+            foreach(var c in results){
+                var balances = c.Balance.Count();
+                Console.WriteLine($"{c.BankId}: {balances}");
             }
+            /*
+            TASK:
+            As in the previous exercise, you're going to output the millionaires,
+            but you will also display the full name of the bank. You also need
+            to sort the millionaires' names, ascending by their LAST name.
+
+            Example output:
+                Tina Fey at Citibank
+                Joe Landy at Wells Fargo
+                Sarah Ng at First Tennessee
+                Les Paul at Wells Fargo
+                Peg Vale at Bank of America
+            */
+            List<Bank> banks = new List<Bank>()
+            {
+                new Bank(){ Name="First Tennessee", Symbol="FTB"},
+                new Bank(){ Name="Wells Fargo", Symbol="WF"},
+                new Bank(){ Name="Bank of America", Symbol="BOA"},
+                new Bank(){ Name="Citibank", Symbol="CITI"},
+            };
+            /*
+            You will need to use the `Where()`
+            and `Select()` methods to generate
+            instances of the following class.
+            */
+
+            // List<ReportItem> millionaireReport = ...
+            // foreach (var item in millionaireReport)
+            // {
+            //     Console.WriteLine($"{item.CustomerName} at {item.BankName}");
+            // }
         }
     }
 }
