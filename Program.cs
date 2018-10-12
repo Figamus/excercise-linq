@@ -184,12 +184,23 @@ namespace linq
             and `Select()` methods to generate
             instances of the following class.
             */
+    // public class ReportItem
+    // {
+    //     public string CustomerName { get; set; }
+    //     public string BankName { get; set; }
+    // }
+            List<ReportItem> millionaireReport = new List<ReportItem>();
 
-            // List<ReportItem> millionaireReport = ...
-            // foreach (var item in millionaireReport)
-            // {
-            //     Console.WriteLine($"{item.CustomerName} at {item.BankName}");
-            // }
+            foreach(Customer c in millionaires)
+            {
+                Bank currentBank = banks.Find(b => b.Symbol == c.Bank);
+                millionaireReport.Add(new ReportItem() {CustomerName = $"{c.Name}", BankName = $"{currentBank.Name}"});
+            }
+
+            foreach (var item in millionaireReport)
+            {
+                Console.WriteLine($"{item.CustomerName} at {item.BankName}");
+            }
         }
     }
 }
