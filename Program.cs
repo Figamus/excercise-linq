@@ -190,14 +190,15 @@ namespace linq
     //     public string BankName { get; set; }
     // }
             List<ReportItem> millionaireReport = new List<ReportItem>();
-
             foreach(Customer c in millionaires)
             {
                 Bank currentBank = banks.Find(b => b.Symbol == c.Bank);
                 millionaireReport.Add(new ReportItem() {CustomerName = $"{c.Name}", BankName = $"{currentBank.Name}"});
             }
 
-            foreach (var item in millionaireReport)
+            var newlist = millionaireReport.OrderByDescending(b => b.CustomerName.Split(" ")[1]);
+            
+            foreach (var item in newlist)
             {
                 Console.WriteLine($"{item.CustomerName} at {item.BankName}");
             }
